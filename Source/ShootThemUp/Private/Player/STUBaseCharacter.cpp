@@ -47,7 +47,7 @@ void ASTUBaseCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
     PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ASTUBaseCharacter::OnStartRunning);
 
-    PlayerInputComponent->BindAction("Jump", IE_Released, this, &ASTUBaseCharacter::OnStopRunning);
+    PlayerInputComponent->BindAction("Run", IE_Released, this, &ASTUBaseCharacter::OnStopRunning);
 }
 
 bool ASTUBaseCharacter::IsRanning() const
