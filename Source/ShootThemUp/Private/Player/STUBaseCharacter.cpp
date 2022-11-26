@@ -7,7 +7,9 @@
 #include "Components/STUCharacterMovementComponent.h"
 #include "Components/STUHealthComponent.h"
 #include "Components/TextRenderComponent.h"
-// Sets default values
+
+DEFINE_LOG_CATEGORY_STATIC(BaseCharacterLog, All, All);
+
 ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjInit)
     : Super(ObjInit.SetDefaultSubobjectClass<USTUCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
@@ -30,6 +32,7 @@ ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjInit)
 void ASTUBaseCharacter::BeginPlay()
 {
     Super::BeginPlay();
+
 }
 
 // Called every frame
@@ -39,6 +42,8 @@ void ASTUBaseCharacter::Tick(float DeltaTime)
 
     const auto Health = HealthComponent->GetHealth();
     HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
+
+    TakeDamage(0.1f, FDamageEvent{}, Controller, this);
 }
 
 // Called to bind functionality to input
@@ -105,3 +110,4 @@ void ASTUBaseCharacter::OnStartRunning() {
 void ASTUBaseCharacter::OnStopRunning() {
     WantsToRun = false;
 }
+
