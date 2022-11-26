@@ -30,6 +30,9 @@ public:
     UPROPERTY(EditAnyWhere, BlueprintReadWrite)
     bool DoFullDamage = false;
 
+    UPROPERTY(EditAnyWhere, BlueprintReadWrite)
+    TSubclassOf<UDamageType> DamageType;
+
 protected:
     // Called when the game starts or when spawned
     virtual void BeginPlay() override;
