@@ -2,19 +2,22 @@
 
 #include "Weapon/STURifleWeapon.h"
 
-void ASTURifleWeapon::StartFire() {
+void ASTURifleWeapon::StartFire()
+{
     MakeShot();
     GetWorldTimerManager().SetTimer(ShotTimerHandle, this, &ASTURifleWeapon::MakeShot, TimeBetweenShots, true);
 }
 
-void ASTURifleWeapon::StopFire() {
+void ASTURifleWeapon::StopFire()
+{
     GetWorldTimerManager().ClearTimer(ShotTimerHandle);
 }
 
 void ASTURifleWeapon::MakeShot()
 {
-    if (!GetWorld())
+    if (!GetWorld() || IsAmmoEmpty())
     {
+        StopFire();
         return;
     }
 
@@ -23,6 +26,7 @@ void ASTURifleWeapon::MakeShot()
 
     if (!GetTraceData(TraceStart, TraceEnd))
     {
+        StopFire();
         return;
     }
 
@@ -39,6 +43,8 @@ void ASTURifleWeapon::MakeShot()
     {
         DrawDebugLine(GetWorld(), GetMuzzleWorldLocation(), TraceEnd, FColor::Red, false, 3.0f, 0, 3.0f);
     }
+
+    DecreaseAmmo();
 }
 
 bool ASTURifleWeapon::GetTraceData(FVector& TraceStart, FVector& TraceEnd) const
