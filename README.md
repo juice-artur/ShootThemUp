@@ -6,7 +6,7 @@ Learning the features and functionality of Unreal Engine 4/5 by creating a third
 - [x] Character movement
 - [x] Movement animation 
 - [x] Health
-- [ ] Weapon 
+- [x] Weapon 
 - [ ] UMG
 - [ ] Pickups
 - [ ] VFX
