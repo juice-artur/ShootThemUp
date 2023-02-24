@@ -7,7 +7,6 @@
 #include "STUCoreTypes.h"
 #include "STUHealthComponent.generated.h"
 
-
 UCLASS(ClassGroup = (Custom), meta = (BlueprintSpawnableComponent))
 class SHOOTTHEMUP_API USTUHealthComponent : public UActorComponent
 {
@@ -16,14 +15,17 @@ class SHOOTTHEMUP_API USTUHealthComponent : public UActorComponent
 public:
     USTUHealthComponent();
 
-    float GetHealth() const { return Health; }
-
-    UFUNCTION()
-    bool IsDead() const { return FMath::IsNearlyZero(Health); };
-
     FOnDeath OnDeath;
 
     FOnHealthChanged OnHealthChanged;
+
+    float GetHealth() const { return Health; }
+
+    UFUNCTION(BlueprintCallable, Category = "Health")
+    bool IsDead() const { return FMath::IsNearlyZero(Health); };
+
+    UFUNCTION(BlueprintCallable, Category = "Health")
+    float GetHealthPercent() const { return Health / MaxHealth; };
 
 protected:
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Health", meta = (ClampMin = "0.0", ClampMax = "100.0"))
