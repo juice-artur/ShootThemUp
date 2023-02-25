@@ -1,4 +1,4 @@
-// Shoot then up game
+// Shoot them up game
 
 #include "Weapon/STUBaseWeapon.h"
 #include "Components/SkeletalMeshComponent.h"

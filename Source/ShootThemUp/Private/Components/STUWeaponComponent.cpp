@@ -1,4 +1,4 @@
-// Shoot then up game
+// Shoot them up game
 
 #include "Components/STUWeaponComponent.h"
 #include "Weapon/STUBaseWeapon.h"

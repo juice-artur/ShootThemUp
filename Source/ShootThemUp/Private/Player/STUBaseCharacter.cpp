@@ -1,4 +1,4 @@
-// Shoot then up game
+// Shoot them up game
 
 #include "Player/STUBaseCharacter.h"
 #include "Camera/CameraComponent.h"

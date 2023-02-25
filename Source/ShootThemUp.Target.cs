@@ -1,4 +1,4 @@
-// Shoot then up game
+// Shoot them up game
 
 using UnrealBuildTool;
 using System.Collections.Generic;

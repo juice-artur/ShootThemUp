@@ -1,4 +1,4 @@
-// Shoot then up game
+// Shoot them up game
 
 #include "Components/STUHealthComponent.h"
 #include "GameFramework/Actor.h"

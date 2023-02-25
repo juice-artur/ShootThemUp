@@ -1,4 +1,4 @@
-// Shoot then up game
+// Shoot them up game
 
 
 #include "Animations/STUReloadFinishedAnimNotify.h"

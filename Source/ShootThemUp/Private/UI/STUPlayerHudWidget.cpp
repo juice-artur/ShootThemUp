@@ -1,4 +1,4 @@
-// Shoot then up game
+// Shoot them up game
 
 #include "UI/STUPlayerHudWidget.h"
 #include "Components/STUHealthComponent.h"
