@@ -1,6 +1,5 @@
 // Shoot then up game
 
-
 #include "UI/STUPlayerHudWidget.h"
 #include "Components/STUHealthComponent.h"
 #include "Components/STUWeaponComponent.h"
@@ -22,19 +21,36 @@ float USTUPlayerHudWidget::GetHealthPercent() const
     return HealthComponent->GetHealthPercent();
 }
 
-bool USTUPlayerHudWidget::GetWeaponUIData(FWeaponUIData& UIData) const
+bool USTUPlayerHudWidget::GetCurrentWeaponUIData(FWeaponUIData& UIData) const
 {
-    const auto Player = GetOwningPlayerPawn();
-    if (!Player)
-    {
-        return false;
-    }
-    const auto Component = Player->GetComponentByClass(USTUWeaponComponent::StaticClass());
-    const auto WeaponComponent = Cast<USTUWeaponComponent>(Component);
+    const auto WeaponComponent = GetWeaponComponent();
     if (!WeaponComponent)
     {
         return false;
     }
 
-    return WeaponComponent->GetWeaponUIData(UIData);
+    return WeaponComponent->GetCurrentWeaponUIData(UIData);
+}
+
+bool USTUPlayerHudWidget::GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const
+{
+    const auto WeaponComponent = GetWeaponComponent();
+    if (!WeaponComponent)
+    {
+        return false;
+    }
+
+    return WeaponComponent->GetCurrentWeaponAmmoData(AmmoData);
+}
+
+USTUWeaponComponent* USTUPlayerHudWidget::GetWeaponComponent() const
+{
+    const auto Player = GetOwningPlayerPawn();
+    if (!Player)
+    {
+        return nullptr;
+    }
+    const auto Component = Player->GetComponentByClass(USTUWeaponComponent::StaticClass());
+    const auto WeaponComponent = Cast<USTUWeaponComponent>(Component);
+    return WeaponComponent;
 }
