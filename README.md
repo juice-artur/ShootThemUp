@@ -8,7 +8,7 @@ Learning the features and functionality of Unreal Engine 4/5 by creating a third
 - [x] Health
 - [x] Weapon 
 - [x] UMG
-- [ ] Pickups
-- [ ] VFX
+- [x] Pickups
+- [x] VFX
 - [ ] AI
 - [ ] Sound

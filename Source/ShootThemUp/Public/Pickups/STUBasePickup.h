@@ -26,12 +26,20 @@ protected:
     virtual void BeginPlay() override;
 
     virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
+    virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 
 public:
     virtual void Tick(float DeltaTime) override;
 
 private:
+    float RotatioYaw = 0.0f;
+
+    UPROPERTY()
+    TArray<APawn*> OverlappingPawns;
+
     virtual bool GivePickupTo(APawn* PlayerPawn);
-    void PickupWasTacken();
+    void PickupWasTaken();
     void Respawn();
+
+    void GenerateRotatioYaw();
 };

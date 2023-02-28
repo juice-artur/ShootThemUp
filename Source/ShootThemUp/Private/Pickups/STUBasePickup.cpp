@@ -21,6 +21,8 @@ void ASTUBasePickup::BeginPlay()
     Super::BeginPlay();
 
     check(CollisionComponent);
+
+    GenerateRotatioYaw();
 }
 
 void ASTUBasePickup::NotifyActorBeginOverlap(AActor* OtherActor)
@@ -30,14 +32,36 @@ void ASTUBasePickup::NotifyActorBeginOverlap(AActor* OtherActor)
     const auto Pawn = Cast<APawn>(OtherActor);
     if (GivePickupTo(Pawn))
     {
-        PickupWasTacken();
-
+        PickupWasTaken();
     }
+    else if (Pawn)
+    {
+        OverlappingPawns.Add(Pawn);
+    }
+}
+
+void ASTUBasePickup::NotifyActorEndOverlap(AActor* OtherActor)
+{
+    Super::NotifyActorBeginOverlap(OtherActor);
+
+    const auto Pawn = Cast<APawn>(OtherActor);
+    OverlappingPawns.Remove(Pawn);
 }
 
 void ASTUBasePickup::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+
+    AddActorLocalRotation(FRotator(0.0f, RotatioYaw * DeltaTime, 0.0f));
+
+    for (const auto OverlapPawn : OverlappingPawns)
+    {
+        if (GivePickupTo(OverlapPawn))
+        {
+            PickupWasTaken();
+            break;
+        }
+    }
 }
 
 bool ASTUBasePickup::GivePickupTo(APawn* PlayerPawn)
@@ -45,7 +69,7 @@ bool ASTUBasePickup::GivePickupTo(APawn* PlayerPawn)
     return false;
 }
 
-void ASTUBasePickup::PickupWasTacken()
+void ASTUBasePickup::PickupWasTaken()
 {
     CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
 
@@ -61,9 +85,18 @@ void ASTUBasePickup::PickupWasTacken()
 
 void ASTUBasePickup::Respawn()
 {
+    GenerateRotatioYaw();
+
     if (GetRootComponent())
     {
         GetRootComponent()->SetVisibility(true, true);
     }
     CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
+}
+
+void ASTUBasePickup::GenerateRotatioYaw()
+{
+    const auto Direction = FMath::RandBool() ? 1 : -1;
+
+    RotatioYaw = FMath::RandRange(100.0f, 200.0f) * Direction;
 }
