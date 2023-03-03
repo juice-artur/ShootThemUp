@@ -11,8 +11,6 @@
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/Controller.h"
 
-
-
 DEFINE_LOG_CATEGORY_STATIC(BaseCharacterLog, All, All);
 
 ASTUBaseCharacter::ASTUBaseCharacter(const FObjectInitializer& ObjInit)
@@ -46,7 +44,6 @@ void ASTUBaseCharacter::BeginPlay()
     HealthComponent->OnHealthChanged.AddUObject(this, &ASTUBaseCharacter::OnHealthChanged);
 
     LandedDelegate.AddDynamic(this, &ASTUBaseCharacter::OnGroundLanded);
-
 }
 
 void ASTUBaseCharacter::Tick(float DeltaTime)
@@ -125,7 +122,7 @@ void ASTUBaseCharacter::OnDeath()
 
     UE_LOG(BaseCharacterLog, Display, TEXT("Player %s is deadth"), *GetName());
 
-    PlayAnimMontage(DeathAnimMontage);
+    // PlayAnimMontage(DeathAnimMontage);
 
     GetCharacterMovement()->DisableMovement();
 
@@ -138,13 +135,18 @@ void ASTUBaseCharacter::OnDeath()
 
     GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
     WeaponComponent->StopFire();
+
+    GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    GetMesh()->SetSimulatePhysics(true);
 }
 
-void ASTUBaseCharacter::OnHealthChanged(float Health) {
+void ASTUBaseCharacter::OnHealthChanged(float Health)
+{
     HealthTextComponent->SetText(FText::FromString(FString::Printf(TEXT("%.0f"), Health)));
 }
 
-void ASTUBaseCharacter::OnGroundLanded(const FHitResult& Hit) {
+void ASTUBaseCharacter::OnGroundLanded(const FHitResult& Hit)
+{
     const auto FallVelovityZ = -GetCharacterMovement()->Velocity.Z;
     UE_LOG(BaseCharacterLog, Display, TEXT("On landed: %f"), FallVelovityZ);
 
@@ -158,4 +160,3 @@ void ASTUBaseCharacter::OnGroundLanded(const FHitResult& Hit) {
 
     TakeDamage(FinalDamage, FDamageEvent{}, nullptr, nullptr);
 }
-
