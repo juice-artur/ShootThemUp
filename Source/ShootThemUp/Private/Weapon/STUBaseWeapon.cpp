@@ -38,13 +38,28 @@ APlayerController* ASTUBaseWeapon::GetPlayerController() const
 
 bool ASTUBaseWeapon::GetPlayerViewPoint(FVector& ViewLocation, FRotator& ViewRotation) const
 {
-    const auto Controller = GetPlayerController();
-    if (!Controller)
+    const auto STUCharacter = Cast<ACharacter>(GetOwner());
+
+    if (!STUCharacter)
     {
         return false;
     }
 
-    Controller->GetPlayerViewPoint(ViewLocation, ViewRotation);
+    if (STUCharacter->IsPlayerControlled())
+    {
+        const auto Controller = GetPlayerController();
+        if (!Controller)
+        {
+            return false;
+        }
+
+        Controller->GetPlayerViewPoint(ViewLocation, ViewRotation);
+    }
+    else
+    {
+        ViewLocation = GetMuzzleWorldLocation();
+        ViewRotation = WeaponMesh->GetSocketRotation(MuzzleSocketName);
+    }
 
     return true;
 }
@@ -172,7 +187,7 @@ bool ASTUBaseWeapon::TryToAddAmmo(int32 ClipsAmount)
         CurrentAmmo.Bullets = DefaultAmmo.Bullets;
     }
 
-     return true;
+    return true;
 }
 
 void ASTUBaseWeapon::StartFire() {}
