@@ -18,8 +18,18 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     GENERATED_BODY()
 
 public:
-    // Sets default values for this character's properties
+    virtual void OnDeath();
+
     ASTUBaseCharacter(const FObjectInitializer& ObjInit);
+    virtual void Tick(float DeltaTime) override;
+
+    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+    UFUNCTION(BlueprintCallable, Category = "Movement")
+    bool IsRanning() const;
+
+    UFUNCTION(BlueprintCallable, Category = "Movement")
+    float GetMovementDirection() const;
 
 protected:
     // Called when the game starts or when spawned
@@ -49,19 +59,6 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = "Damage")
     FVector2D LandedDamage = FVector2D(10.0f, 100.0f);
 
-public:
-    // Called every frame
-    virtual void Tick(float DeltaTime) override;
-
-    // Called to bind functionality to input
-    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-    UFUNCTION(BlueprintCallable, Category = "Movement")
-    bool IsRanning() const;
-
-    UFUNCTION(BlueprintCallable, Category = "Movement")
-    float GetMovementDirection() const;
-
 private:
     bool WantsToRun = false;
     bool IsMovingForvard = false;
@@ -71,8 +68,6 @@ private:
 
     void OnStartRunning();
     void OnStopRunning();
-
-    void OnDeath();
 
     void OnHealthChanged(float Health, float HealtDelta);
 
