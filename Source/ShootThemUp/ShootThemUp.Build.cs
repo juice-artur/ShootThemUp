@@ -8,8 +8,8 @@ public class ShootThemUp : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new string[] { 
-            "Core", 
+        PublicDependencyModuleNames.AddRange(new string[] {
+            "Core",
             "CoreUObject",
             "Engine",
             "InputCore",
@@ -32,7 +32,8 @@ public class ShootThemUp : ModuleRules
             "ShootThemUp/Public/Weapon/Components",
             "ShootThemUp/Public/AI",
             "ShootThemUp/Public/AI/Tasks",
-            "ShootThemUp/Public/AI/Services"
+            "ShootThemUp/Public/AI/Services",
+            "ShootThemUp/Public/AI/EQS"
         });
 
         // Uncomment if you are using Slate UI
