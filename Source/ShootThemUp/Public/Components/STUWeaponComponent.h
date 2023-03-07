@@ -27,6 +27,8 @@ public:
 
     bool TryToAddAmmo(TSubclassOf<ASTUBaseWeapon> WeapoType, int32 ClipsAmount);
 
+    bool NeedAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType);
+
 protected:
     UPROPERTY(EditDefaultsOnly, Category = "Weapon")
     TArray<FWeaponData> WeaponData;
