@@ -14,7 +14,9 @@ class SHOOTTHEMUP_API ASTUBasePickup : public AActor
     GENERATED_BODY()
 
 public:
+    virtual void Tick(float DeltaTime) override;
     ASTUBasePickup();
+    bool CouldBeTaken() const;
 
 protected:
     UPROPERTY(VisibleAnyWhere, Category = "Pickup")
@@ -28,11 +30,9 @@ protected:
     virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
     virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 
-public:
-    virtual void Tick(float DeltaTime) override;
-
 private:
     float RotatioYaw = 0.0f;
+    FTimerHandle RespawnTimerHandle;
 
     UPROPERTY()
     TArray<APawn*> OverlappingPawns;
