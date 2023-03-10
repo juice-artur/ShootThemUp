@@ -18,6 +18,9 @@ class SHOOTTHEMUP_API ASTUBaseCharacter : public ACharacter
     GENERATED_BODY()
 
 public:
+    UPROPERTY(EditDefaultsOnly, Category = "Damage")
+    FName MaterialColorName = "Paint Color";
+
     virtual void OnDeath();
 
     ASTUBaseCharacter(const FObjectInitializer& ObjInit);
@@ -30,6 +33,8 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "Movement")
     float GetMovementDirection() const;
+
+    void SetPlayerColor(const FLinearColor& Color);
 
 protected:
     // Called when the game starts or when spawned
