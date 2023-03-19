@@ -60,4 +60,5 @@ private:
     void HealUpdate();
 
     void SetHealth(float NewHealth);
+    void Killed(AController* KillerController);
 };
