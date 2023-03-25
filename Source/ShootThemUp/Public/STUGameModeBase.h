@@ -18,6 +18,10 @@ public:
     ASTUGameModeBase();
     void Killed(AController* KillerController, AController* VictimController);
 
+    FGameData GetGameData() const { return GameData; }
+    int32 GetCurrentRoundNum() const { return CurrentRound; }
+    int32 GetRoundSecondsRemaining() const { return RoundCountDown; }
+
 protected:
     virtual void StartPlay() override;
     virtual UClass* GetDefaultPawnClassForController_Implementation(AController* InController) override;

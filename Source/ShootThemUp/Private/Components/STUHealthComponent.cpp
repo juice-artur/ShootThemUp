@@ -5,6 +5,7 @@
 #include "Engine/World.h"
 #include "TimerManager.h"
 #include "STUGameModeBase.h"
+#include "GameFramework/GameUserSettings.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogHealthComponent, All, All);
 
@@ -104,4 +105,5 @@ void USTUHealthComponent::Killed(AController* KillerController)
     const auto VictimController = Player ? Player->Controller : nullptr;
 
     GameMode->Killed(KillerController, VictimController);
+
 }
