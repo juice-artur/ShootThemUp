@@ -53,4 +53,5 @@ private:
     FLinearColor DetermineColorByTeamID(int32 TeamID) const;
     void SetPlayerColor(AController* Controller);
     void StartRespawn(AController* Controller);
+    void GameOver();
 };
