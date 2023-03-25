@@ -10,13 +10,16 @@
 
 class UCameraComponent;
 class USpringArmComponent;
+class USphereComponent;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUPlayerCharacter : public ASTUBaseCharacter
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 public:
     ASTUPlayerCharacter(const FObjectInitializer& ObjInit);
+    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+    virtual bool IsRunning() const override;
 
 protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
@@ -25,11 +28,11 @@ protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     UCameraComponent* CameraComponent;
 
-    virtual void OnDeath() override;
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+    USphereComponent* CameraCollisionComponent;
 
-public:
-    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-    virtual bool IsRunning() const override;
+    virtual void OnDeath() override;
+    virtual void BeginPlay() override;
 
 private:
     bool WantsToRun = false;
@@ -40,4 +43,14 @@ private:
 
     void OnStartRunning();
     void OnStopRunning();
+
+    UFUNCTION()
+    void OnCameraCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+        int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+    UFUNCTION()
+    void OnCameraCollisionEndOverlap(
+        UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+    void CheckCameraOverlap();
 };
