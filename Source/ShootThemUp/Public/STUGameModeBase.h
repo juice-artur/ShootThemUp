@@ -16,6 +16,8 @@ class SHOOTTHEMUP_API ASTUGameModeBase : public AGameModeBase
 
 public:
     ASTUGameModeBase();
+    FOnMatchStateChangedSignature OnMatchStateChanged;
+
     void Killed(AController* KillerController, AController* VictimController);
 
     FGameData GetGameData() const { return GameData; }
@@ -38,6 +40,7 @@ protected:
     FGameData GameData;
 
 private:
+    ESTUMatchState MatchState = ESTUMatchState::WaitingToStart;
     int32 CurrentRound = 1;
     int32 RoundCountDown = 0;
     FTimerHandle GameRoundTimerHandle;
@@ -54,4 +57,5 @@ private:
     void SetPlayerColor(AController* Controller);
     void StartRespawn(AController* Controller);
     void GameOver();
+    void SetMatchState(ESTUMatchState State);
 };
