@@ -21,6 +21,7 @@ public:
     FGameData GetGameData() const { return GameData; }
     int32 GetCurrentRoundNum() const { return CurrentRound; }
     int32 GetRoundSecondsRemaining() const { return RoundCountDown; }
+    void RespawnRequest(AController* Controller);
 
 protected:
     virtual void StartPlay() override;
@@ -51,4 +52,5 @@ private:
     void CreateTeamsInfo();
     FLinearColor DetermineColorByTeamID(int32 TeamID) const;
     void SetPlayerColor(AController* Controller);
+    void StartRespawn(AController* Controller);
 };
