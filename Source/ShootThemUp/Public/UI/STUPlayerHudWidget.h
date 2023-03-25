@@ -28,11 +28,12 @@ public:
     UFUNCTION(BlueprintCallable, Category = "UI")
     bool IsPlayerSpectating() const;
 
-     UFUNCTION(BlueprintImplementableEvent, Category = "UI")
+    UFUNCTION(BlueprintImplementableEvent, Category = "UI")
     void OnTakeDamage();
 
     virtual bool Initialize() override;
 
-    private:
+private:
     void OnHealthChange(float Health, float HealtFelta);
+    void OnNewPawn(APawn* NewPawn);
 };
