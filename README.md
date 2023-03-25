@@ -11,5 +11,6 @@ Learning the features and functionality of Unreal Engine 4/5 by creating a third
 - [x] Pickups
 - [x] VFX
 - [x] AI
-- [ ] GameMode
+- [x] GameMode
+- [ ] Interface
 - [ ] Sound
