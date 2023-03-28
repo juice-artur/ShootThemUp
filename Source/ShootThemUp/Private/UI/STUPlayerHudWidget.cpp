@@ -51,14 +51,15 @@ bool USTUPlayerHudWidget::IsPlayerSpectating() const
     return Controller && Controller->GetStateName() == NAME_Spectating;
 }
 
-bool USTUPlayerHudWidget::Initialize()
+void USTUPlayerHudWidget::NativeOnInitialized()
 {
+    Super::NativeOnInitialized();
+
     if (GetOwningPlayer())
     {
         GetOwningPlayer()->GetOnNewPawnNotifier().AddUObject(this, &USTUPlayerHudWidget::OnNewPawn);
         OnNewPawn(GetOwningPlayerPawn());
     }
-    return Super::Initialize();
 }
 
 void USTUPlayerHudWidget::OnHealthChange(float Health, float HealtDelta)
