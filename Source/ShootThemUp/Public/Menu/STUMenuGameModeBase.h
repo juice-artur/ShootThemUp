@@ -6,9 +6,6 @@
 #include "GameFramework/GameModeBase.h"
 #include "STUMenuGameModeBase.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class SHOOTTHEMUP_API ASTUMenuGameModeBase : public AGameModeBase
 {

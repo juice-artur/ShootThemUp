@@ -9,6 +9,14 @@ DEFINE_LOG_CATEGORY_STATIC(LogSTUMenuWidget, All, All);
 
 void USTUMenuWidget::NativeOnInitialized()
 {
+    if (StartGameButton)
+    {
+        StartGameButton->OnClicked.AddDynamic(this, &USTUMenuWidget::OnStartGame);
+    }
+}
+
+void USTUMenuWidget::OnStartGame()
+{
     if (!GetWorld())
     {
         return;
@@ -27,10 +35,4 @@ void USTUMenuWidget::NativeOnInitialized()
     }
 
     UGameplayStatics::OpenLevel(this, STUGameInstance->GetStartupLevelName());
-}
-
-void USTUMenuWidget::OnStartGame()
-{
-    const FName StartupLevelName = "TestLevel";
-    UGameplayStatics::OpenLevel(this, StartupLevelName);
 }
