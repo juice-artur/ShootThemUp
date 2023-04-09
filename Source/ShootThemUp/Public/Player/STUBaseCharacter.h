@@ -32,8 +32,6 @@ public:
     void SetPlayerColor(const FLinearColor& Color);
 
 protected:
-    virtual void BeginPlay() override;
-
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     USTUHealthComponent* HealthComponent;
 
@@ -49,9 +47,10 @@ protected:
     UPROPERTY(EditDefaultsOnly, Category = "Damage")
     FVector2D LandedDamage = FVector2D(10.0f, 100.0f);
 
-private:
-    void OnHealthChanged(float Health, float HealtDelta);
+    virtual void BeginPlay() override;
+    virtual void OnHealthChanged(float Health, float HealthDelta);
 
+private:
     UFUNCTION()
     void OnGroundLanded(const FHitResult& Hit);
 };
