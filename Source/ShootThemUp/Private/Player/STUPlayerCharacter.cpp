@@ -10,6 +10,8 @@
 #include "InputAction.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "GameFramework/PlayerController.h" 
+#include "GameFramework/PlayerController.h"
 
 ASTUPlayerCharacter::ASTUPlayerCharacter(const FObjectInitializer& ObjInit) : Super(ObjInit)
 {
@@ -85,20 +87,24 @@ void ASTUPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
     UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(PlayerInputComponent);
     EnhancedInputComponent->BindAction(IA_Move, ETriggerEvent::Triggered, this, &ASTUPlayerCharacter::Move);
+    EnhancedInputComponent->BindAction(IA_Fire, ETriggerEvent::Started, this, &ASTUPlayerCharacter::StartFire);
+    EnhancedInputComponent->BindAction(IA_Fire, ETriggerEvent::Completed, this, &ASTUPlayerCharacter::StopFire);
+    EnhancedInputComponent->BindAction(IA_TurnAround, ETriggerEvent::Triggered, this, &ASTUPlayerCharacter::TurnAround);
+    
 
 
+    //  PlayerInputComponent->BindAxis("MoveForward", this, &ASTUPlayerCharacter::MoveForward);
+    // PlayerInputComponent->BindAxis("MoveRight", this, &ASTUPlayerCharacter::MoveRight);
+    // PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ASTUPlayerCharacter::OnStartFire);
+    //  PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &USTUWeaponComponent::StopFire);
+    //  PlayerInputComponent->BindAxis("TurnAround", this, &ASTUPlayerCharacter::AddControllerYawInput);
 
-  //  PlayerInputComponent->BindAxis("MoveForward", this, &ASTUPlayerCharacter::MoveForward);
-   // PlayerInputComponent->BindAxis("MoveRight", this, &ASTUPlayerCharacter::MoveRight);
-   // 
-   // 
    // PlayerInputComponent->BindAxis("LookUp", this, &ASTUPlayerCharacter::AddControllerPitchInput);
-  //  PlayerInputComponent->BindAxis("TurnAround", this, &ASTUPlayerCharacter::AddControllerYawInput);
+
    // PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASTUPlayerCharacter::Jump);
    // PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ASTUPlayerCharacter::OnStartRunning);
   //  PlayerInputComponent->BindAction("Run", IE_Released, this, &ASTUPlayerCharacter::OnStopRunning);
-   // PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ASTUPlayerCharacter::OnStartFire);
-  //  PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &USTUWeaponComponent::StopFire);
+
    // PlayerInputComponent->BindAction("NextWeapon", IE_Pressed, WeaponComponent, &USTUWeaponComponent::NextWeapon);
   //  PlayerInputComponent->BindAction("Reload", IE_Pressed, WeaponComponent, &USTUWeaponComponent::Reload);
 
@@ -163,4 +169,19 @@ void ASTUPlayerCharacter::Move(const FInputActionValue& Value)
 {
     MoveRight(Value.Get<FVector2D>().X);
     MoveForward(Value.Get<FVector2D>().Y);
+}
+
+void ASTUPlayerCharacter::StartFire(const FInputActionValue& Value)
+{
+    OnStartFire();
+}
+
+void ASTUPlayerCharacter::StopFire(const FInputActionValue& Value)
+{
+    WeaponComponent->StopFire();
+}
+
+void ASTUPlayerCharacter::TurnAround(const FInputActionValue& Value)
+{
+    AddControllerYawInput(Value.Get<float>());
 }
