@@ -4,11 +4,15 @@
 
 #include "CoreMinimal.h"
 #include "Player/STUBaseCharacter.h"
+#include "InputActionValue.h"
 #include "STUPlayerCharacter.generated.h"
 
 class UCameraComponent;
 class USpringArmComponent;
 class USphereComponent;
+class UInputMappingContext;
+class UInputAction;
+
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUPlayerCharacter : public ASTUBaseCharacter
@@ -27,6 +31,13 @@ protected:
 
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
     USphereComponent* CameraCollisionComponent;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+    UInputMappingContext* PlayerMappingContext;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+    UInputAction* IA_Move;
+
 
     virtual void OnDeath() override;
     virtual void BeginPlay() override;
@@ -56,4 +67,6 @@ private:
         UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 
     void CheckCameraOverlap();
+
+    void Move(const FInputActionValue& Value);
 };
