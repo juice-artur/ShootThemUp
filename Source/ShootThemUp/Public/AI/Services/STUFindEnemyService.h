@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #pragma once
 
@@ -6,9 +6,6 @@
 #include "BehaviorTree/BTService.h"
 #include "STUFindEnemyService.generated.h"
 
-/**
- *
- */
 UCLASS()
 class SHOOTTHEMUP_API USTUFindEnemyService : public UBTService
 {

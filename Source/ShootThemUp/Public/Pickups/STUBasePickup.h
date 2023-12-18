@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #pragma once
 
@@ -7,6 +7,7 @@
 #include "STUBasePickup.generated.h"
 
 class USphereComponent;
+class USoundCue;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUBasePickup : public AActor
@@ -14,32 +15,36 @@ class SHOOTTHEMUP_API ASTUBasePickup : public AActor
     GENERATED_BODY()
 
 public:
-    virtual void Tick(float DeltaTime) override;
     ASTUBasePickup();
-    bool CouldBeTaken() const;
 
 protected:
-    UPROPERTY(VisibleAnyWhere, Category = "Pickup")
+    UPROPERTY(VisibleAnywhere, Category = "Pickup")
     USphereComponent* CollisionComponent;
 
-    UPROPERTY(VisibleAnyWhere, Category = "Pickup")
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Pickup")
     float RespawnTime = 5.0f;
 
-    virtual void BeginPlay() override;
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Sound")
+    USoundCue* PickupTakenSound;
 
+    virtual void BeginPlay() override;
     virtual void NotifyActorBeginOverlap(AActor* OtherActor) override;
     virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 
+public:
+    virtual void Tick(float DeltaTime) override;
+    bool CouldBeTaken() const;
+
 private:
-    float RotatioYaw = 0.0f;
+    float RotationYaw = 0.0f;
     FTimerHandle RespawnTimerHandle;
 
     UPROPERTY()
     TArray<APawn*> OverlappingPawns;
 
     virtual bool GivePickupTo(APawn* PlayerPawn);
+
     void PickupWasTaken();
     void Respawn();
-
-    void GenerateRotatioYaw();
+    void GenerateRotationYaw();
 };

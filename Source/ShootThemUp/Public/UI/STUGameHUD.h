@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #pragma once
 
@@ -7,11 +7,13 @@
 #include "STUCoreTypes.h"
 #include "STUGameHUD.generated.h"
 
+class USTUBaseWidget;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUGameHUD : public AHUD
 {
     GENERATED_BODY()
+
 public:
     virtual void DrawHUD() override;
 
@@ -21,7 +23,7 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
     TSubclassOf<UUserWidget> PauseWidgetClass;
-    
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
     TSubclassOf<UUserWidget> GameOverWidgetClass;
 
@@ -29,10 +31,10 @@ protected:
 
 private:
     UPROPERTY()
-    TMap<ESTUMatchState, UUserWidget*> GameWidgets;
+    TMap<ESTUMatchState, USTUBaseWidget*> GameWidgets;
 
     UPROPERTY()
-    UUserWidget* CurrentWidget = nullptr;
+    USTUBaseWidget* CurrentWidget = nullptr;
 
     void DrawCrossHair();
     void OnMatchStateChanged(ESTUMatchState State);

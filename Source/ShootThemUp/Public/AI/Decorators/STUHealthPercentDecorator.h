@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #pragma once
 
@@ -6,13 +6,11 @@
 #include "BehaviorTree/BTDecorator.h"
 #include "STUHealthPercentDecorator.generated.h"
 
-/**
- *
- */
 UCLASS()
 class SHOOTTHEMUP_API USTUHealthPercentDecorator : public UBTDecorator
 {
     GENERATED_BODY()
+
 public:
     USTUHealthPercentDecorator();
 

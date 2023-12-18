@@ -1,10 +1,11 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #include "Weapon/Components/STUWeaponFXComponent.h"
 #include "NiagaraFunctionLibrary.h"
 #include "PhysicalMaterials/PhysicalMaterial.h"
 #include "Kismet/GameplayStatics.h"
 #include "Components/DecalComponent.h"
+#include "Sound/SoundCue.h"
 
 USTUWeaponFXComponent::USTUWeaponFXComponent()
 {
@@ -13,32 +14,34 @@ USTUWeaponFXComponent::USTUWeaponFXComponent()
 
 void USTUWeaponFXComponent::PlayImpactFX(const FHitResult& Hit)
 {
-    auto ImapactData = DefaultImpactData;
+    auto ImpactData = DefaultImpactData;
 
     if (Hit.PhysMaterial.IsValid())
     {
         const auto PhysMat = Hit.PhysMaterial.Get();
         if (ImpactDataMap.Contains(PhysMat))
         {
-            ImapactData = ImpactDataMap[PhysMat];
+            ImpactData = ImpactDataMap[PhysMat];
         }
     }
 
     // niagara
     UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(),  //
-        ImapactData.NiagaraEffect,                              //
+        ImpactData.NiagaraEffect,                               //
         Hit.ImpactPoint,                                        //
         Hit.ImpactNormal.Rotation());
 
     // decal
     auto DecalComponent = UGameplayStatics::SpawnDecalAtLocation(GetWorld(),  //
-        ImapactData.DecalData.Material,                                       //
-        ImapactData.DecalData.Size,                                           //
+        ImpactData.DecalData.Material,                                        //
+        ImpactData.DecalData.Size,                                            //
         Hit.ImpactPoint,                                                      //
         Hit.ImpactNormal.Rotation());
-
     if (DecalComponent)
     {
-        DecalComponent->SetFadeOut(ImapactData.DecalData.LifeTime, ImapactData.DecalData.FadeOutTime);
+        DecalComponent->SetFadeOut(ImpactData.DecalData.LifeTime, ImpactData.DecalData.FadeOutTime);
     }
+
+    // sound
+    UGameplayStatics::PlaySoundAtLocation(GetWorld(), ImpactData.Sound, Hit.ImpactPoint);
 }

@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #pragma once
 
@@ -12,6 +12,7 @@ UCLASS()
 class SHOOTTHEMUP_API USTUGoToMenuWidget : public UUserWidget
 {
     GENERATED_BODY()
+
 protected:
     UPROPERTY(meta = (BindWidget))
     UButton* GoToMenuButton;

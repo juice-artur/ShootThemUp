@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #include "Weapon/STUProjectile.h"
 #include "Components/SphereComponent.h"
@@ -18,11 +18,11 @@ ASTUProjectile::ASTUProjectile()
     CollisionComponent->bReturnMaterialOnMove = true;
     SetRootComponent(CollisionComponent);
 
-    MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("ProjectileMovementComponent");
+    MovementComponent = CreateDefaultSubobject<UProjectileMovementComponent>("MovementComponent");
     MovementComponent->InitialSpeed = 2000.0f;
     MovementComponent->ProjectileGravityScale = 0.0f;
 
-    WeaponFXComponent = CreateDefaultSubobject<USTUWeaponFXComponent>("WeapoFXComponent");
+    WeaponFXComponent = CreateDefaultSubobject<USTUWeaponFXComponent>("WeaponFXComponent");
 }
 
 void ASTUProjectile::BeginPlay()
@@ -42,14 +42,11 @@ void ASTUProjectile::BeginPlay()
 void ASTUProjectile::OnProjectileHit(
     UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
 {
-    if (!GetWorld())
-    {
-        return;
-    }
+    if (!GetWorld()) return;
 
     MovementComponent->StopMovementImmediately();
 
-    // Make damage
+    // make damage
     UGameplayStatics::ApplyRadialDamage(GetWorld(),  //
         DamageAmount,                                //
         GetActorLocation(),                          //
@@ -60,14 +57,13 @@ void ASTUProjectile::OnProjectileHit(
         GetController(),                             //
         DoFullDamage);
 
+    // DrawDebugSphere(GetWorld(), GetActorLocation(), DamageRadius, 24, FColor::Red, false, 5.0f);
     WeaponFXComponent->PlayImpactFX(Hit);
-
     Destroy();
 }
 
 AController* ASTUProjectile::GetController() const
 {
     const auto Pawn = Cast<APawn>(GetOwner());
-
     return Pawn ? Pawn->GetController() : nullptr;
 }

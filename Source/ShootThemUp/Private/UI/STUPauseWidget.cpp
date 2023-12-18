@@ -1,6 +1,6 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
-#include "STUPauseWidget.h"
+#include "UI/STUPauseWidget.h"
 #include "GameFramework/GameModeBase.h"
 #include "Components/Button.h"
 
@@ -16,10 +16,7 @@ void USTUPauseWidget::NativeOnInitialized()
 
 void USTUPauseWidget::OnClearPause()
 {
-    if (!GetWorld() || !GetWorld()->GetAuthGameMode())
-    {
-        return;
-    }
+    if (!GetWorld() || !GetWorld()->GetAuthGameMode()) return;
 
     GetWorld()->GetAuthGameMode()->ClearPause();
 }

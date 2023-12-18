@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #pragma once
 
@@ -6,13 +6,11 @@
 #include "BehaviorTree/BTTaskNode.h"
 #include "STUNextLocationTask.generated.h"
 
-/**
- *
- */
 UCLASS()
 class SHOOTTHEMUP_API USTUNextLocationTask : public UBTTaskNode
 {
     GENERATED_BODY()
+
 public:
     USTUNextLocationTask();
 

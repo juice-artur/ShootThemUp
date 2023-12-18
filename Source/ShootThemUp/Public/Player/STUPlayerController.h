@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #pragma once
 
@@ -13,6 +13,7 @@ UCLASS()
 class SHOOTTHEMUP_API ASTUPlayerController : public APlayerController
 {
     GENERATED_BODY()
+
 public:
     ASTUPlayerController();
 
@@ -27,4 +28,5 @@ protected:
 private:
     void OnPauseGame();
     void OnMatchStateChanged(ESTUMatchState State);
+    void OnMuteSound();
 };

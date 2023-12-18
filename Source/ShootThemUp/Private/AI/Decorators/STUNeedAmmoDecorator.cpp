@@ -1,6 +1,6 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
-#include "STUNeedAmmoDecorator.h"
+#include "AI/Decorators/STUNeedAmmoDecorator.h"
 #include "AIController.h"
 #include "STUUtils.h"
 #include "Components/STUWeaponComponent.h"

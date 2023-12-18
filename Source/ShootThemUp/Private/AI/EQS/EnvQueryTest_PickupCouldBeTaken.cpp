@@ -1,6 +1,6 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
-#include "EnvQueryTest_PickupCouldBeTaken.h"
+#include "AI/EQS/EnvQueryTest_PickupCouldBeTaken.h"
 #include "EnvironmentQuery/Items/EnvQueryItemType_ActorBase.h"
 #include "Pickups/STUBasePickup.h"
 

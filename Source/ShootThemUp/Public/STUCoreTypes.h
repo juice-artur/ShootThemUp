@@ -2,7 +2,7 @@
 
 #include "STUCoreTypes.generated.h"
 
-// Weapon
+// weapon
 class ASTUBaseWeapon;
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FOnClipEmptySignature, ASTUBaseWeapon*);
@@ -46,12 +46,13 @@ struct FWeaponUIData
     UTexture2D* CrossHairIcon;
 };
 
-// Health
-DECLARE_MULTICAST_DELEGATE(FOnDeath);
-DECLARE_MULTICAST_DELEGATE_TwoParams(FOnHealthChanged, float, float);
+// health
+DECLARE_MULTICAST_DELEGATE(FOnDeathSignature);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FOnHealthChangedSignature, float, float);
 
 // VFX
 class UNiagaraSystem;
+class USoundCue;
 
 USTRUCT(BlueprintType)
 struct FDecalData
@@ -81,9 +82,12 @@ struct FImpactData
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "VFX")
     FDecalData DecalData;
+
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Sound")
+    USoundCue* Sound;
 };
 
-// Game
+// game
 USTRUCT(BlueprintType)
 struct FGameData
 {
@@ -104,7 +108,7 @@ struct FGameData
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite)
     TArray<FLinearColor> TeamColors;
 
-    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game", meta = (ClampMin = "5", ClampMax = "60"))
+    UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game", meta = (ClampMin = "3", ClampMax = "20"))
     int32 RespawnTime = 5;  // in seconds
 };
 

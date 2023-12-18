@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #include "AI/Services/STUFindEnemyService.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -13,9 +13,7 @@ USTUFindEnemyService::USTUFindEnemyService()
 
 void USTUFindEnemyService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
-    const auto Blackboard = OwnerComp.GetBlackboardComponent();
-
-    if (Blackboard)
+    if (const auto Blackboard = OwnerComp.GetBlackboardComponent())
     {
         const auto Controller = OwnerComp.GetAIOwner();
         const auto PerceptionComponent = STUUtils::GetSTUPlayerComponent<USTUAIPerceptionComponent>(Controller);
@@ -24,6 +22,5 @@ void USTUFindEnemyService::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* No
             Blackboard->SetValueAsObject(EnemyActorKey.SelectedKeyName, PerceptionComponent->GetClosestEnemy());
         }
     }
-
     Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
 }

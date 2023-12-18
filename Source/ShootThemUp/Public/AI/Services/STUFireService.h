@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #pragma once
 
@@ -10,6 +10,7 @@ UCLASS()
 class SHOOTTHEMUP_API USTUFireService : public UBTService
 {
     GENERATED_BODY()
+
 public:
     USTUFireService();
 

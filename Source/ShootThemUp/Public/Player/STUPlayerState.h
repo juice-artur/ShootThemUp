@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #pragma once
 
@@ -10,6 +10,7 @@ UCLASS()
 class SHOOTTHEMUP_API ASTUPlayerState : public APlayerState
 {
     GENERATED_BODY()
+
 public:
     void SetTeamID(int32 ID) { TeamID = ID; }
     int32 GetTeamID() const { return TeamID; }
@@ -29,6 +30,6 @@ private:
     int32 TeamID;
     FLinearColor TeamColor;
 
-    int32 KillsNum;
-    int32 DeathsNum;
+    int32 KillsNum = 0;
+    int32 DeathsNum = 0;
 };

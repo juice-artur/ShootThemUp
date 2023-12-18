@@ -1,9 +1,7 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #pragma once
 
-#include "CoreMinimal.h"
-#include "Player/STUBaseCharacter.h"
 #include "CoreMinimal.h"
 #include "Player/STUBaseCharacter.h"
 #include "STUPlayerCharacter.generated.h"
@@ -16,10 +14,9 @@ UCLASS()
 class SHOOTTHEMUP_API ASTUPlayerCharacter : public ASTUBaseCharacter
 {
     GENERATED_BODY()
+
 public:
     ASTUPlayerCharacter(const FObjectInitializer& ObjInit);
-    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-    virtual bool IsRunning() const override;
 
 protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
@@ -34,6 +31,10 @@ protected:
     virtual void OnDeath() override;
     virtual void BeginPlay() override;
 
+public:
+    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+    virtual bool IsRunning() const override;
+
 private:
     bool WantsToRun = false;
     bool IsMovingForward = false;
@@ -43,6 +44,8 @@ private:
 
     void OnStartRunning();
     void OnStopRunning();
+
+    void OnStartFire();
 
     UFUNCTION()
     void OnCameraCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,

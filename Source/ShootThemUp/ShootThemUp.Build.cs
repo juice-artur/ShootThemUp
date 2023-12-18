@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 using UnrealBuildTool;
 
@@ -8,7 +8,8 @@ public class ShootThemUp : ModuleRules
     {
         PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new string[] {
+        PublicDependencyModuleNames.AddRange(new string[]
+        {
             "Core",
             "CoreUObject",
             "Engine",
@@ -16,12 +17,13 @@ public class ShootThemUp : ModuleRules
             "Niagara",
             "PhysicsCore",
             "GameplayTasks",
-            "NavigationSystem",
+            "NavigationSystem"
         });
 
         PrivateDependencyModuleNames.AddRange(new string[] { });
 
-        PublicIncludePaths.AddRange(new string[] {
+        PublicIncludePaths.AddRange(new string[]
+        {
             "ShootThemUp/Public/Player",
             "ShootThemUp/Public/Components",
             "ShootThemUp/Public/Dev",
@@ -36,7 +38,8 @@ public class ShootThemUp : ModuleRules
             "ShootThemUp/Public/AI/EQS",
             "ShootThemUp/Public/AI/Decorators",
             "ShootThemUp/Public/Menu",
-            "ShootThemUp/Public/Menu/UI"
+            "ShootThemUp/Public/Menu/UI",
+            "ShootThemUp/Public/Sound",
         });
 
         // Uncomment if you are using Slate UI

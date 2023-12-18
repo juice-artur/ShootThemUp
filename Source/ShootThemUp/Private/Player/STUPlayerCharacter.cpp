@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #include "Player/STUPlayerCharacter.h"
 #include "Camera/CameraComponent.h"
@@ -19,6 +19,7 @@ ASTUPlayerCharacter::ASTUPlayerCharacter(const FObjectInitializer& ObjInit) : Su
 
     CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
     CameraComponent->SetupAttachment(SpringArmComponent);
+
     CameraCollisionComponent = CreateDefaultSubobject<USphereComponent>("CameraCollisionComponent");
     CameraCollisionComponent->SetupAttachment(CameraComponent);
     CameraCollisionComponent->SetSphereRadius(10.0f);
@@ -42,6 +43,12 @@ void ASTUPlayerCharacter::OnCameraCollisionBeginOverlap(UPrimitiveComponent* Ove
     CheckCameraOverlap();
 }
 
+void ASTUPlayerCharacter::OnCameraCollisionEndOverlap(
+    UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
+{
+    CheckCameraOverlap();
+}
+
 void ASTUPlayerCharacter::CheckCameraOverlap()
 {
     const auto HideMesh = CameraCollisionComponent->IsOverlappingComponent(GetCapsuleComponent());
@@ -52,18 +59,11 @@ void ASTUPlayerCharacter::CheckCameraOverlap()
 
     for (auto MeshChild : MeshChildren)
     {
-        const auto MeshChildGeometry = Cast<UPrimitiveComponent>(MeshChild);
-        if (MeshChildGeometry)
+        if (const auto MeshChildGeometry = Cast<UPrimitiveComponent>(MeshChild))
         {
             MeshChildGeometry->SetOwnerNoSee(HideMesh);
         }
     }
-}
-
-void ASTUPlayerCharacter::OnCameraCollisionEndOverlap(
-    UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
-    CheckCameraOverlap();
 }
 
 void ASTUPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -79,10 +79,14 @@ void ASTUPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
     PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASTUPlayerCharacter::Jump);
     PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ASTUPlayerCharacter::OnStartRunning);
     PlayerInputComponent->BindAction("Run", IE_Released, this, &ASTUPlayerCharacter::OnStopRunning);
-    PlayerInputComponent->BindAction("Fire", IE_Pressed, WeaponComponent, &USTUWeaponComponent::StartFire);
+    PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ASTUPlayerCharacter::OnStartFire);
     PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &USTUWeaponComponent::StopFire);
     PlayerInputComponent->BindAction("NextWeapon", IE_Pressed, WeaponComponent, &USTUWeaponComponent::NextWeapon);
     PlayerInputComponent->BindAction("Reload", IE_Pressed, WeaponComponent, &USTUWeaponComponent::Reload);
+
+    DECLARE_DELEGATE_OneParam(FZoomInputSignature, bool);
+    PlayerInputComponent->BindAction<FZoomInputSignature>("Zoom", IE_Pressed, WeaponComponent, &USTUWeaponComponent::Zoom, true);
+    PlayerInputComponent->BindAction<FZoomInputSignature>("Zoom", IE_Released, WeaponComponent, &USTUWeaponComponent::Zoom, false);
 }
 
 void ASTUPlayerCharacter::MoveForward(float Amount)
@@ -90,6 +94,11 @@ void ASTUPlayerCharacter::MoveForward(float Amount)
     IsMovingForward = Amount > 0.0f;
     if (Amount == 0.0f) return;
     AddMovementInput(GetActorForwardVector(), Amount);
+
+    if (IsRunning() && WeaponComponent->IsFiring())
+    {
+        WeaponComponent->StopFire();
+    }
 }
 
 void ASTUPlayerCharacter::MoveRight(float Amount)
@@ -101,6 +110,10 @@ void ASTUPlayerCharacter::MoveRight(float Amount)
 void ASTUPlayerCharacter::OnStartRunning()
 {
     WantsToRun = true;
+    if (IsRunning())
+    {
+        WeaponComponent->StopFire();
+    }
 }
 
 void ASTUPlayerCharacter::OnStopRunning()
@@ -120,4 +133,10 @@ void ASTUPlayerCharacter::OnDeath()
     {
         Controller->ChangeState(NAME_Spectating);
     }
+}
+
+void ASTUPlayerCharacter::OnStartFire()
+{
+    if (IsRunning()) return;
+    WeaponComponent->StartFire();
 }

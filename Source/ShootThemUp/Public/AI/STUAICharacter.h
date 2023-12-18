@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #pragma once
 
@@ -13,11 +13,13 @@ UCLASS()
 class SHOOTTHEMUP_API ASTUAICharacter : public ASTUBaseCharacter
 {
     GENERATED_BODY()
+
 public:
+    ASTUAICharacter(const FObjectInitializer& ObjInit);
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
     UBehaviorTree* BehaviorTreeAsset;
 
-    ASTUAICharacter(const FObjectInitializer& ObjInit);
     virtual void Tick(float DeltaTime) override;
 
 protected:
@@ -28,6 +30,7 @@ protected:
     float HealthVisibilityDistance = 1000.0f;
 
     virtual void BeginPlay() override;
+
     virtual void OnDeath() override;
     virtual void OnHealthChanged(float Health, float HealthDelta) override;
 

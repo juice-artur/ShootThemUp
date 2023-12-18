@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #include "UI/STUGoToMenuWidget.h"
 #include "Components/Button.h"
@@ -19,16 +19,10 @@ void USTUGoToMenuWidget::NativeOnInitialized()
 
 void USTUGoToMenuWidget::OnGoToMenu()
 {
-    if (!GetWorld())
-    {
-        return;
-    }
+    if (!GetWorld()) return;
 
     const auto STUGameInstance = GetWorld()->GetGameInstance<USTUGameInstance>();
-    if (!STUGameInstance)
-    {
-        return;
-    }
+    if (!STUGameInstance) return;
 
     if (STUGameInstance->GetMenuLevelName().IsNone())
     {

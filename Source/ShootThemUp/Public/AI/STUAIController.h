@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #pragma once
 
@@ -13,6 +13,7 @@ UCLASS()
 class SHOOTTHEMUP_API ASTUAIController : public AAIController
 {
     GENERATED_BODY()
+
 public:
     ASTUAIController();
 
@@ -27,7 +28,6 @@ protected:
     FName FocusOnKeyName = "EnemyActor";
 
     virtual void OnPossess(APawn* InPawn) override;
-
     virtual void Tick(float DeltaTime) override;
 
 private:

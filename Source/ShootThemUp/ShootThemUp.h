@@ -1,6 +1,5 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #pragma once
 
 #include "CoreMinimal.h"
-

@@ -1,6 +1,6 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
-#include "STUHealthPercentDecorator.h"
+#include "AI/Decorators/STUHealthPercentDecorator.h"
 #include "AIController.h"
 #include "STUUtils.h"
 #include "Components/STUHealthComponent.h"

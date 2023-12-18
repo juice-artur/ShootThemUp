@@ -1,7 +1,9 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #include "Pickups/STUBasePickup.h"
 #include "Components/SphereComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogBasePickup, All, All);
 
@@ -16,18 +18,29 @@ ASTUBasePickup::ASTUBasePickup()
     SetRootComponent(CollisionComponent);
 }
 
-bool ASTUBasePickup::CouldBeTaken() const
-{
-    return !GetWorldTimerManager().IsTimerActive(RespawnTimerHandle);
-}
-
 void ASTUBasePickup::BeginPlay()
 {
     Super::BeginPlay();
 
     check(CollisionComponent);
 
-    GenerateRotatioYaw();
+    GenerateRotationYaw();
+}
+
+void ASTUBasePickup::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+
+    AddActorLocalRotation(FRotator(0.0f, RotationYaw, 0.0f));
+
+    for (const auto OverlapPawn : OverlappingPawns)
+    {
+        if (GivePickupTo(OverlapPawn))
+        {
+            PickupWasTaken();
+            break;
+        }
+    }
 }
 
 void ASTUBasePickup::NotifyActorBeginOverlap(AActor* OtherActor)
@@ -53,22 +66,6 @@ void ASTUBasePickup::NotifyActorEndOverlap(AActor* OtherActor)
     OverlappingPawns.Remove(Pawn);
 }
 
-void ASTUBasePickup::Tick(float DeltaTime)
-{
-    Super::Tick(DeltaTime);
-
-    AddActorLocalRotation(FRotator(0.0f, RotatioYaw * DeltaTime, 0.0f));
-
-    for (const auto OverlapPawn : OverlappingPawns)
-    {
-        if (GivePickupTo(OverlapPawn))
-        {
-            PickupWasTaken();
-            break;
-        }
-    }
-}
-
 bool ASTUBasePickup::GivePickupTo(APawn* PlayerPawn)
 {
     return false;
@@ -77,19 +74,18 @@ bool ASTUBasePickup::GivePickupTo(APawn* PlayerPawn)
 void ASTUBasePickup::PickupWasTaken()
 {
     CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Ignore);
-
     if (GetRootComponent())
     {
         GetRootComponent()->SetVisibility(false, true);
     }
 
     GetWorldTimerManager().SetTimer(RespawnTimerHandle, this, &ASTUBasePickup::Respawn, RespawnTime);
+    UGameplayStatics::PlaySoundAtLocation(GetWorld(), PickupTakenSound, GetActorLocation());
 }
 
 void ASTUBasePickup::Respawn()
 {
-    GenerateRotatioYaw();
-
+    GenerateRotationYaw();
     if (GetRootComponent())
     {
         GetRootComponent()->SetVisibility(true, true);
@@ -97,9 +93,13 @@ void ASTUBasePickup::Respawn()
     CollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
 }
 
-void ASTUBasePickup::GenerateRotatioYaw()
+void ASTUBasePickup::GenerateRotationYaw()
 {
-    const auto Direction = FMath::RandBool() ? 1 : -1;
+    const auto Direction = FMath::RandBool() ? 1.0f : -1.0f;
+    RotationYaw = FMath::RandRange(1.0f, 2.0f) * Direction;
+}
 
-    RotatioYaw = FMath::RandRange(100.0f, 200.0f) * Direction;
+bool ASTUBasePickup::CouldBeTaken() const
+{
+    return !GetWorldTimerManager().IsTimerActive(RespawnTimerHandle);
 }

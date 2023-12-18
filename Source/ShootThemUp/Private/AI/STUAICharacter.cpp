@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #include "AI/STUAICharacter.h"
 #include "AI/STUAIController.h"
@@ -28,17 +28,17 @@ ASTUAICharacter::ASTUAICharacter(const FObjectInitializer& ObjInit)
     HealthWidgetComponent->SetDrawAtDesiredSize(true);
 }
 
-void ASTUAICharacter::Tick(float DeltaTime)
-{
-    Super::Tick(DeltaTime);
-    UpdateHealthWidgetVisibility();
-}
-
 void ASTUAICharacter::BeginPlay()
 {
     Super::BeginPlay();
 
     check(HealthWidgetComponent);
+}
+
+void ASTUAICharacter::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+    UpdateHealthWidgetVisibility();
 }
 
 void ASTUAICharacter::OnDeath()

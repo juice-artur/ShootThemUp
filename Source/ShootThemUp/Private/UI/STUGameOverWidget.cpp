@@ -1,9 +1,9 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
-#include "STUGameOverWidget.h"
+#include "UI/STUGameOverWidget.h"
 #include "STUGameModeBase.h"
 #include "Player/STUPlayerState.h"
-#include "STUPlayerStatRowWidget.h"
+#include "UI/STUPlayerStatRowWidget.h"
 #include "Components/VerticalBox.h"
 #include "STUUtils.h"
 #include "Components/Button.h"
@@ -15,8 +15,7 @@ void USTUGameOverWidget::NativeOnInitialized()
 
     if (GetWorld())
     {
-        const auto GameMode = Cast<ASTUGameModeBase>(GetWorld()->GetAuthGameMode());
-        if (GameMode)
+        if (const auto GameMode = Cast<ASTUGameModeBase>(GetWorld()->GetAuthGameMode()))
         {
             GameMode->OnMatchStateChanged.AddUObject(this, &USTUGameOverWidget::OnMatchStateChanged);
         }
@@ -45,22 +44,13 @@ void USTUGameOverWidget::UpdatePlayersStat()
     for (auto It = GetWorld()->GetControllerIterator(); It; ++It)
     {
         const auto Controller = It->Get();
-        if (!Controller)
-        {
-            continue;
-        }
+        if (!Controller) continue;
 
         const auto PlayerState = Cast<ASTUPlayerState>(Controller->PlayerState);
-        if (!PlayerState)
-        {
-            continue;
-        }
+        if (!PlayerState) continue;
 
         const auto PlayerStatRowWidget = CreateWidget<USTUPlayerStatRowWidget>(GetWorld(), PlayerStatRowWidgetClass);
-        if (!PlayerStatRowWidget)
-        {
-            continue;
-        }
+        if (!PlayerStatRowWidget) continue;
 
         PlayerStatRowWidget->SetPlayerName(FText::FromString(PlayerState->GetPlayerName()));
         PlayerStatRowWidget->SetKills(STUUtils::TextFromInt(PlayerState->GetKillsNum()));

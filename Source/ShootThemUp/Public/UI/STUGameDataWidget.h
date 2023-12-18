@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #pragma once
 
@@ -13,8 +13,8 @@ UCLASS()
 class SHOOTTHEMUP_API USTUGameDataWidget : public UUserWidget
 {
     GENERATED_BODY()
-public:
 
+public:
     UFUNCTION(BlueprintCallable, Category = "UI")
     int32 GetCurrentRoundNum() const;
 

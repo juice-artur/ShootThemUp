@@ -1,4 +1,4 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #pragma once
 
@@ -19,15 +19,17 @@ public:
 
     virtual void StartFire();
     void StopFire();
+    bool IsFiring() const;
     virtual void NextWeapon();
     void Reload();
 
     bool GetCurrentWeaponUIData(FWeaponUIData& UIData) const;
     bool GetCurrentWeaponAmmoData(FAmmoData& AmmoData) const;
 
-    bool TryToAddAmmo(TSubclassOf<ASTUBaseWeapon> WeapoType, int32 ClipsAmount);
-
+    bool TryToAddAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType, int32 ClipsAmount);
     bool NeedAmmo(TSubclassOf<ASTUBaseWeapon> WeaponType);
+
+    void Zoom(bool Enabled);
 
 protected:
     UPROPERTY(EditDefaultsOnly, Category = "Weapon")
@@ -60,22 +62,21 @@ protected:
 private:
     UPROPERTY()
     UAnimMontage* CurrentReloadAnimMontage = nullptr;
+
     bool EquipAnimInProgress = false;
     bool ReloadAnimInProgress = false;
 
+    void InitAnimations();
     void SpawnWeapons();
-
     void AttachWeaponToSocket(ASTUBaseWeapon* Weapon, USceneComponent* SceneComponent, const FName& SocketName);
 
     void PlayAnimMontage(UAnimMontage* Animation);
 
-    void InitAnimations();
-
-    void OnEquipFinished(USkeletalMeshComponent* MeshComponent);
-    void OnReloadFinished(USkeletalMeshComponent* MeshComponent);
+    void OnEquipFinished(USkeletalMeshComponent* MeshComp);
+    void OnReloadFinished(USkeletalMeshComponent* MeshComp);
 
     bool CanReload() const;
 
-    void OnEmptyClip(ASTUBaseWeapon* AmmoEmptyWeapon);
+    void OnClipEmpty(ASTUBaseWeapon* ClipEmptyWeapon);
     void ChangeClip();
 };

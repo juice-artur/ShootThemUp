@@ -1,16 +1,16 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Blueprint/UserWidget.h"
+#include "UI/STUBaseWidget.h"
 #include "STUCoreTypes.h"
-#include "STUPlayerHudWidget.generated.h"
+#include "STUPlayerHUDWidget.generated.h"
 
 class UProgressBar;
 
 UCLASS()
-class SHOOTTHEMUP_API USTUPlayerHudWidget : public UUserWidget
+class SHOOTTHEMUP_API USTUPlayerHUDWidget : public USTUBaseWidget
 {
     GENERATED_BODY()
 
@@ -43,6 +43,9 @@ protected:
     UPROPERTY(meta = (BindWidget))
     UProgressBar* HealthProgressBar;
 
+    UPROPERTY(Transient, meta = (BindWidgetAnim))
+    UWidgetAnimation* DamageAnimation;
+
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
     float PercentColorThreshold = 0.3f;
 
@@ -51,10 +54,11 @@ protected:
 
     UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "UI")
     FLinearColor BadColor = FLinearColor::Red;
+
     virtual void NativeOnInitialized() override;
 
 private:
-    void OnHealthChange(float Health, float HealtFelta);
+    void OnHealthChanged(float Health, float HealthDelta);
     void OnNewPawn(APawn* NewPawn);
     void UpdateHealthBar();
 };

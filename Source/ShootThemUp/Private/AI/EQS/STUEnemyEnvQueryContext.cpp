@@ -1,6 +1,6 @@
-// Shoot them up game
+// Shoot Them Up Game, All Rights Reserved.
 
-#include "STUEnemyEnvQueryContext.h"
+#include "AI/EQS/STUEnemyEnvQueryContext.h"
 #include "EnvironmentQuery/EnvQueryTypes.h"
 #include "EnvironmentQuery/Items/EnvQueryItemType_Actor.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -11,12 +11,8 @@ void USTUEnemyEnvQueryContext::ProvideContext(FEnvQueryInstance& QueryInstance, 
     const auto QueryOwner = Cast<AActor>(QueryInstance.Owner.Get());
 
     const auto Blackboard = UAIBlueprintHelperLibrary::GetBlackboard(QueryOwner);
-    if (!Blackboard)
-    {
-        return;
-    }
+    if (!Blackboard) return;
 
     const auto ContextActor = Blackboard->GetValueAsObject(EnemyActorKeyName);
-
     UEnvQueryItemType_Actor::SetContextHelper(ContextData, Cast<AActor>(ContextActor));
 }
