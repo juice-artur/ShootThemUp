@@ -45,6 +45,13 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
     UInputAction* IA_TurnAround;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+    UInputAction* IA_LookUp;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+    UInputAction* IA_NextWeapon;
+
+
     virtual void OnDeath() override;
     virtual void BeginPlay() override;
 
@@ -80,4 +87,8 @@ private:
     void Move(const FInputActionValue& Value);
 
     void TurnAround(const FInputActionValue& Value);
+
+    void LookUp(const FInputActionValue& Value);
+
+    void NextWeapon(const FInputActionValue& Value);
 };

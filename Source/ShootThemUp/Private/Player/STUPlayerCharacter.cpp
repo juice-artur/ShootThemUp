@@ -90,7 +90,8 @@ void ASTUPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
     EnhancedInputComponent->BindAction(IA_Fire, ETriggerEvent::Started, this, &ASTUPlayerCharacter::StartFire);
     EnhancedInputComponent->BindAction(IA_Fire, ETriggerEvent::Completed, this, &ASTUPlayerCharacter::StopFire);
     EnhancedInputComponent->BindAction(IA_TurnAround, ETriggerEvent::Triggered, this, &ASTUPlayerCharacter::TurnAround);
-    
+    EnhancedInputComponent->BindAction(IA_LookUp, ETriggerEvent::Triggered, this, &ASTUPlayerCharacter::LookUp);
+    EnhancedInputComponent->BindAction(IA_NextWeapon, ETriggerEvent::Triggered, this, &ASTUPlayerCharacter::NextWeapon);
 
 
     //  PlayerInputComponent->BindAxis("MoveForward", this, &ASTUPlayerCharacter::MoveForward);
@@ -98,15 +99,13 @@ void ASTUPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
     // PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ASTUPlayerCharacter::OnStartFire);
     //  PlayerInputComponent->BindAction("Fire", IE_Released, WeaponComponent, &USTUWeaponComponent::StopFire);
     //  PlayerInputComponent->BindAxis("TurnAround", this, &ASTUPlayerCharacter::AddControllerYawInput);
-
    // PlayerInputComponent->BindAxis("LookUp", this, &ASTUPlayerCharacter::AddControllerPitchInput);
+    // PlayerInputComponent->BindAction("NextWeapon", IE_Pressed, WeaponComponent, &USTUWeaponComponent::NextWeapon);
+
 
    // PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ASTUPlayerCharacter::Jump);
    // PlayerInputComponent->BindAction("Run", IE_Pressed, this, &ASTUPlayerCharacter::OnStartRunning);
   //  PlayerInputComponent->BindAction("Run", IE_Released, this, &ASTUPlayerCharacter::OnStopRunning);
-
-   // PlayerInputComponent->BindAction("NextWeapon", IE_Pressed, WeaponComponent, &USTUWeaponComponent::NextWeapon);
-  //  PlayerInputComponent->BindAction("Reload", IE_Pressed, WeaponComponent, &USTUWeaponComponent::Reload);
 
    // DECLARE_DELEGATE_OneParam(FZoomInputSignature, bool);
    // PlayerInputComponent->BindAction<FZoomInputSignature>("Zoom", IE_Pressed, WeaponComponent, &USTUWeaponComponent::Zoom, true);
@@ -184,4 +183,14 @@ void ASTUPlayerCharacter::StopFire(const FInputActionValue& Value)
 void ASTUPlayerCharacter::TurnAround(const FInputActionValue& Value)
 {
     AddControllerYawInput(Value.Get<float>());
+}
+
+void ASTUPlayerCharacter::LookUp(const FInputActionValue& Value)
+{
+    AddControllerPitchInput(Value.Get<float>());
+}
+
+void ASTUPlayerCharacter::NextWeapon(const FInputActionValue& Value)
+{
+    WeaponComponent->NextWeapon();
 }

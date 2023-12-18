@@ -14,5 +14,11 @@
 				"AIModule"
 			]
 		}
+	],
+	"Plugins": [
+		{
+			"Name": "RemoteSession",
+			"Enabled": true
+		}
 	]
 }
