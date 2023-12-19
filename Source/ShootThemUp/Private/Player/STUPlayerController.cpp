@@ -28,7 +28,9 @@ void ASTUPlayerController::OnMatchStateChanged(ESTUMatchState State)
     if (State == ESTUMatchState::InProgress)
     {
         SetInputMode(FInputModeGameOnly());
-        bShowMouseCursor = false;
+
+
+        bShowMouseCursor = true;
     }
     else
     {

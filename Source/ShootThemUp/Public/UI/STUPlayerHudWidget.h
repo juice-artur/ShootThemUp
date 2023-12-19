@@ -39,6 +39,13 @@ public:
     UFUNCTION(BlueprintCallable, Category = "UI")
     FString FormatBullets(int32 BulletsNum) const;
 
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    void StartFire() const;
+
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    void StopFire() const;
+
+
 protected:
     UPROPERTY(meta = (BindWidget))
     UProgressBar* HealthProgressBar;

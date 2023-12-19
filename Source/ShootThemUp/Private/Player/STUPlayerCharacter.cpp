@@ -78,7 +78,7 @@ void ASTUPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
     check(PlayerInputComponent);
     check(WeaponComponent);
 
-     APlayerController* PlayerController = Cast<APlayerController>(GetController());
+    APlayerController* PlayerController = Cast<APlayerController>(GetController());
 
     UEnhancedInputLocalPlayerSubsystem* Subsystem =
         ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer());
@@ -94,8 +94,8 @@ void ASTUPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
     EnhancedInputComponent->BindAction(IA_LookUp, ETriggerEvent::Triggered, this, &ASTUPlayerCharacter::LookUp);
     EnhancedInputComponent->BindAction(IA_NextWeapon, ETriggerEvent::Triggered, this, &ASTUPlayerCharacter::NextWeapon);
     EnhancedInputComponent->BindAction(IA_MobileCameraMove, ETriggerEvent::Started, this, &ASTUPlayerCharacter::OnTouchStarted);
-
-
+    EnhancedInputComponent->BindAction(IA_MobileCameraMove, ETriggerEvent::Triggered, this, &ASTUPlayerCharacter::UpdateCameraPosition);
+    
     //  PlayerInputComponent->BindAxis("MoveForward", this, &ASTUPlayerCharacter::MoveForward);
     // PlayerInputComponent->BindAxis("MoveRight", this, &ASTUPlayerCharacter::MoveRight);
     // PlayerInputComponent->BindAction("Fire", IE_Pressed, this, &ASTUPlayerCharacter::OnStartFire);
@@ -208,9 +208,27 @@ void ASTUPlayerCharacter::OnTouchStarted(const FInputActionValue& Value)
     }
 }
 
+void ASTUPlayerCharacter::UpdateCameraPosition(const FInputActionValue& Value) 
+{
+    FVector TouchPosition = Value.Get<FVector>();
+    if (IsRightSide(TouchPosition))
+    {
+        FVector2D NewFingerPosition;
+
+        NewFingerPosition.X = TouchPosition.X;
+        NewFingerPosition.Y = TouchPosition.Y;
+
+        AddControllerYawInput(-1*(StartFingerPosition.X - NewFingerPosition.X));
+
+        AddControllerPitchInput(-1*(StartFingerPosition.Y - NewFingerPosition.Y));
+        StartFingerPosition = NewFingerPosition;
+    }
+   
+} 
+
 bool ASTUPlayerCharacter::IsRightSide(FVector TouchLocation)
 {
-    APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+    APlayerController* PlayerController = UGameplayStatics::GetPlayerController(this, 0);
 
     if (PlayerController)
     {
@@ -218,14 +236,11 @@ bool ASTUPlayerCharacter::IsRightSide(FVector TouchLocation)
 
         if (LocalPlayer && LocalPlayer->ViewportClient)
         {
-            FVector2D ScreenPosition;
-            if (UGameplayStatics::ProjectWorldToScreen(PlayerController, TouchLocation, ScreenPosition))
+            FVector2D ViewportSize = LocalPlayer->ViewportClient->Viewport->GetSizeXY();
+
+            if (TouchLocation.X > ViewportSize.X / 2)
             {
-                FVector2D ViewportSize = LocalPlayer->ViewportClient->Viewport->GetSizeXY();
-                if (ScreenPosition.X > ViewportSize.X / 2)
-                {
-                    return true;
-                }
+                return true;
             }
         }
     }

@@ -6,7 +6,8 @@
 #include "STUUtils.h"
 #include "Components/ProgressBar.h"
 #include "Player/STUPlayerState.h"
-
+#include "Kismet/GameplayStatics.h"
+#include "Player/STUPlayerCharacter.h"
 void USTUPlayerHUDWidget::NativeOnInitialized()
 {
     Super::NativeOnInitialized();
@@ -109,4 +110,35 @@ FString USTUPlayerHUDWidget::FormatBullets(int32 BulletsNum) const
     }
 
     return BulletStr;
+}
+
+void USTUPlayerHUDWidget::StartFire() const 
+{
+    APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+
+    if (PlayerController)
+    {
+        ASTUPlayerCharacter* PlayerCharacter = Cast<ASTUPlayerCharacter>(PlayerController->GetPawn());
+
+        if (PlayerCharacter)
+        {
+            PlayerCharacter->OnStartFire();
+        }
+        else
+        {
+
+            UE_LOG(LogTemp, Error, TEXT("Failed to cast to ASTUPlayerCharacter"));
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("No player controller found"));
+    }
+}
+
+void USTUPlayerHUDWidget::StopFire() const
+{
+    const auto WeaponComponent = STUUtils::GetSTUPlayerComponent<USTUWeaponComponent>(GetOwningPlayerPawn());
+    if (!WeaponComponent) return;
+    WeaponComponent->StopFire();
 }

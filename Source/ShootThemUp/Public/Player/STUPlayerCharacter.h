@@ -60,6 +60,7 @@ protected:
 public:
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
     virtual bool IsRunning() const override;
+    void OnStartFire();
 
 private:
     bool WantsToRun = false;
@@ -71,8 +72,6 @@ private:
 
     void OnStartRunning();
     void OnStopRunning();
-
-    void OnStartFire();
 
     void StartFire(const FInputActionValue& Value);
     void StopFire(const FInputActionValue& Value);
@@ -96,5 +95,7 @@ private:
     void NextWeapon(const FInputActionValue& Value);
 
     void OnTouchStarted(const FInputActionValue& Value);
+
+    void UpdateCameraPosition(const FInputActionValue& Value);
     bool IsRightSide(FVector TouchLocation);
 };
