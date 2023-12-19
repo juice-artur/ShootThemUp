@@ -51,6 +51,8 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
     UInputAction* IA_NextWeapon;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+    UInputAction* IA_MobileCameraMove;
 
     virtual void OnDeath() override;
     virtual void BeginPlay() override;
@@ -62,6 +64,7 @@ public:
 private:
     bool WantsToRun = false;
     bool IsMovingForward = false;
+    FVector2D StartFingerPosition;
 
     void MoveForward(float Amount);
     void MoveRight(float Amount);
@@ -91,4 +94,7 @@ private:
     void LookUp(const FInputActionValue& Value);
 
     void NextWeapon(const FInputActionValue& Value);
+
+    void OnTouchStarted(const FInputActionValue& Value);
+    bool IsRightSide(FVector TouchLocation);
 };
