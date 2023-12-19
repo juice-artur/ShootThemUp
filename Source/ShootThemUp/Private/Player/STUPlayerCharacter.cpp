@@ -12,6 +12,7 @@
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/PlayerController.h" 
 #include "GameFramework/PlayerController.h"
+#include "Kismet/GameplayStatics.h"
 
 ASTUPlayerCharacter::ASTUPlayerCharacter(const FObjectInitializer& ObjInit) : Super(ObjInit)
 {
@@ -92,6 +93,7 @@ void ASTUPlayerCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
     EnhancedInputComponent->BindAction(IA_TurnAround, ETriggerEvent::Triggered, this, &ASTUPlayerCharacter::TurnAround);
     EnhancedInputComponent->BindAction(IA_LookUp, ETriggerEvent::Triggered, this, &ASTUPlayerCharacter::LookUp);
     EnhancedInputComponent->BindAction(IA_NextWeapon, ETriggerEvent::Triggered, this, &ASTUPlayerCharacter::NextWeapon);
+    EnhancedInputComponent->BindAction(IA_MobileCameraMove, ETriggerEvent::Started, this, &ASTUPlayerCharacter::OnTouchStarted);
 
 
     //  PlayerInputComponent->BindAxis("MoveForward", this, &ASTUPlayerCharacter::MoveForward);
@@ -193,4 +195,40 @@ void ASTUPlayerCharacter::LookUp(const FInputActionValue& Value)
 void ASTUPlayerCharacter::NextWeapon(const FInputActionValue& Value)
 {
     WeaponComponent->NextWeapon();
+}
+
+void ASTUPlayerCharacter::OnTouchStarted(const FInputActionValue& Value) 
+{
+
+    FVector TouchPosition = Value.Get<FVector>();
+    if (IsRightSide(TouchPosition))
+    {
+        StartFingerPosition.X= TouchPosition.X;
+        StartFingerPosition.Y = TouchPosition.Y;
+    }
+}
+
+bool ASTUPlayerCharacter::IsRightSide(FVector TouchLocation)
+{
+    APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+
+    if (PlayerController)
+    {
+        ULocalPlayer* LocalPlayer = Cast<ULocalPlayer>(PlayerController->Player);
+
+        if (LocalPlayer && LocalPlayer->ViewportClient)
+        {
+            FVector2D ScreenPosition;
+            if (UGameplayStatics::ProjectWorldToScreen(PlayerController, TouchLocation, ScreenPosition))
+            {
+                FVector2D ViewportSize = LocalPlayer->ViewportClient->Viewport->GetSizeXY();
+                if (ScreenPosition.X > ViewportSize.X / 2)
+                {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
 }
