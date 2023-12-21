@@ -16,8 +16,6 @@
 #include "UI/STUJoystickWidget.h"
 #include "UI/STUBaseWidget.h"
 
-USTUJoystickWidget* ASTUPlayerCharacter::Instance = nullptr;
-
 ASTUPlayerCharacter::ASTUPlayerCharacter(const FObjectInitializer& ObjInit) : Super(ObjInit)
 {
     PrimaryActorTick.bCanEverTick = true;
@@ -45,25 +43,11 @@ void ASTUPlayerCharacter::BeginPlay()
 
     CameraCollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ASTUPlayerCharacter::OnCameraCollisionBeginOverlap);
     CameraCollisionComponent->OnComponentEndOverlap.AddDynamic(this, &ASTUPlayerCharacter::OnCameraCollisionEndOverlap);
-
-
-        if (!Instance || !Instance->JoystickBackgroundImage)
-        {
-            Instance = Cast<USTUJoystickWidget>(JoystickWidgetClass);
-            Instance->AddToViewport();
-           
-        }
-
 }
 
  void ASTUPlayerCharacter::Tick(float DeltaTime) 
  {
         Super::Tick(DeltaTime); 
-
-       // auto* ss = Cast<USTUJoystickWidget>(JoystickWidgetClass);
-        FVector2D val = Instance->GetJoystickValues();
-        MoveForward(-val.Y);
-        MoveRight(val.X);
  }
 
 void ASTUPlayerCharacter::OnCameraCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

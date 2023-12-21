@@ -49,33 +49,42 @@ void USTUJoystickWidget::UpdateJoystickVisuals()
 
 FReply USTUJoystickWidget::NativeOnTouchStarted(const FGeometry& InGeometry, const FPointerEvent& InGestureEvent)
 {
-    Super::NativeOnTouchStarted(InGeometry, InGestureEvent);
+    FReply Reply =  Super::NativeOnTouchStarted(InGeometry, InGestureEvent);
     InitialHandlePosition = InGestureEvent.GetScreenSpacePosition();
-    return FReply::Handled();
+    return Reply;
 }
 
 FReply USTUJoystickWidget::NativeOnTouchEnded(const FGeometry& InGeometry, const FPointerEvent& InGestureEvent)
 {
-    Super::NativeOnTouchEnded(InGeometry, InGestureEvent);
+    FReply Reply = Super::NativeOnTouchEnded(InGeometry, InGestureEvent);
     JoystickPosition = FVector2D::ZeroVector;
     UpdateJoystickVisuals();
-    return FReply::Handled();
+    return Reply;
 }
 
 FReply USTUJoystickWidget::NativeOnTouchMoved(const FGeometry& InGeometry, const FPointerEvent& InGestureEvent)
 {
-    Super::NativeOnTouchMoved(InGeometry, InGestureEvent);
-    FVector2D Delta = InGestureEvent.GetScreenSpacePosition() - InitialHandlePosition;
-
-    UpdateJoystickPosition(InGestureEvent.GetCursorDelta());
-
-    InitialHandlePosition = InGestureEvent.GetScreenSpacePosition();
+    FReply Reply =  Super::NativeOnTouchMoved(InGeometry, InGestureEvent);
+    if (!IsHovered())
+    {
+        // Reset joystick position if the finger is outside
+        JoystickPosition = FVector2D::ZeroVector;
+    }
+    else
+    {
+        FVector2D Delta = InGestureEvent.GetScreenSpacePosition() - InitialHandlePosition;
+        UpdateJoystickPosition(InGestureEvent.GetCursorDelta());
+        InitialHandlePosition = InGestureEvent.GetScreenSpacePosition();
+    }
 
     
     if (GEngine)
+    {
         GEngine->AddOnScreenDebugMessage(-1, 15.0f, FColor::Yellow,
             FString::Printf(TEXT("%s::::::%s"), *InitialHandlePosition.ToString(), *GetJoystickValues().ToString()));
-    return FReply::Handled();
+    }
+
+    return Reply;
 
 }
 

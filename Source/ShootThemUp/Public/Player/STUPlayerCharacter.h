@@ -59,11 +59,8 @@ protected:
     UInputAction* IA_MobileCameraMove;
 
 
-    UPROPERTY(EditDefaultsOnly, Category = "UI")
-    UUserWidget* JoystickWidgetClass;
     virtual void OnDeath() override;
     virtual void BeginPlay() override;
-    static USTUJoystickWidget* Instance;
 
 public:
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;

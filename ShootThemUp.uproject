@@ -19,6 +19,11 @@
 		{
 			"Name": "RemoteSession",
 			"Enabled": true
+		},
+		{
+			"Name": "TouchJoystick",
+			"Enabled": true,
+			"MarketplaceURL": "com.epicgames.launcher://ue/marketplace/product/86305677212640c6a5bc5b084dec0e8a"
 		}
 	]
 }
