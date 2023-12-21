@@ -19,34 +19,6 @@ void USTUJoystickWidget::NativeConstruct()
     FVector2D BackgroundSize = JoystickBackgroundImage->GetBrush().GetImageSize();
     JoystickRadius = FMath::Min(BackgroundSize.X, BackgroundSize.Y) * 0.5f;
     InitialHandlePosition = JoystickHandleImage->RenderTransform.Translation;
-    //APlayerController* PC = GetOwningPlayer();
-    //if (PC)
-    //{
-    //    UEnhancedInputLocalPlayerSubsystem* Subsystem =
-    //        ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer());
-
-    //    if (Subsystem)
-    //    {
-    //        UEnhancedPlayerInput* PlayerInput = Subsystem->GetPlayerInput();
-    //        // Now you can use PlayerInput as needed
-    //    }
-    //    else
-    //    {
-    //        UE_LOG(LogTemp, Error, TEXT("Failed to get EnhancedInputLocalPlayerSubsystem"));
-    //    }
-    //}
-    //else
-    //{
-    //    UE_LOG(LogTemp, Error, TEXT("Failed to get Owning PlayerController"));
-    //}
-
-//    APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
-//
-//    if (PlayerController)
-//    {
-//        PlayerCharacter = Cast<ASTUPlayerCharacter>(PlayerController->GetPawn());
-//        UE_LOG(LogTemp, Error, TEXT("Failed to cast to ASTUPlayerCharacter"));
-//    }
 }
 
 void USTUJoystickWidget::UpdateJoystickPosition(FVector2D NewPosition)
@@ -77,12 +49,14 @@ void USTUJoystickWidget::UpdateJoystickVisuals()
 
 FReply USTUJoystickWidget::NativeOnTouchStarted(const FGeometry& InGeometry, const FPointerEvent& InGestureEvent)
 {
+    Super::NativeOnTouchStarted(InGeometry, InGestureEvent);
     InitialHandlePosition = InGestureEvent.GetScreenSpacePosition();
     return FReply::Handled();
 }
 
 FReply USTUJoystickWidget::NativeOnTouchEnded(const FGeometry& InGeometry, const FPointerEvent& InGestureEvent)
 {
+    Super::NativeOnTouchEnded(InGeometry, InGestureEvent);
     JoystickPosition = FVector2D::ZeroVector;
     UpdateJoystickVisuals();
     return FReply::Handled();
@@ -90,6 +64,7 @@ FReply USTUJoystickWidget::NativeOnTouchEnded(const FGeometry& InGeometry, const
 
 FReply USTUJoystickWidget::NativeOnTouchMoved(const FGeometry& InGeometry, const FPointerEvent& InGestureEvent)
 {
+    Super::NativeOnTouchMoved(InGeometry, InGestureEvent);
     FVector2D Delta = InGestureEvent.GetScreenSpacePosition() - InitialHandlePosition;
 
     UpdateJoystickPosition(InGestureEvent.GetCursorDelta());

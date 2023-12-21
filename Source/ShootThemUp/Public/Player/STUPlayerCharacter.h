@@ -60,7 +60,6 @@ protected:
 
 
     UPROPERTY(EditDefaultsOnly, Category = "UI")
-   // TSubclassOf<UUserWidget> JoystickWidgetClass;
     UUserWidget* JoystickWidgetClass;
     virtual void OnDeath() override;
     virtual void BeginPlay() override;

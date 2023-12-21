@@ -35,14 +35,6 @@ ASTUPlayerCharacter::ASTUPlayerCharacter(const FObjectInitializer& ObjInit) : Su
     CameraCollisionComponent->SetSphereRadius(10.0f);
     CameraCollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
     CameraCollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
-
-   /* if (JoystickWidgetClass)
-    {
-        JoystickWidgetClass->RemoveFromParent();
-    }*/
-
-
-
 }
 
 void ASTUPlayerCharacter::BeginPlay()
@@ -55,28 +47,13 @@ void ASTUPlayerCharacter::BeginPlay()
     CameraCollisionComponent->OnComponentEndOverlap.AddDynamic(this, &ASTUPlayerCharacter::OnCameraCollisionEndOverlap);
 
 
-        if (/*JoystickWidgetClass*/ !Instance)
+        if (!Instance || !Instance->JoystickBackgroundImage)
         {
-        Instance = Cast<USTUJoystickWidget>(JoystickWidgetClass);
-        Instance->AddToViewport();
-            //JoystickWidget = CreateWidget<UUserWidget>(GetWorld(), JoystickWidgetClass);
+            Instance = Cast<USTUJoystickWidget>(JoystickWidgetClass);
+            Instance->AddToViewport();
+           
+        }
 
-          //  if (JoystickWidget)
-           // {
-              //  JoystickWidget->AddToViewport();
-              /*  JoystickWidgetClass->AddToViewport();*/
-                //JoystickWidget->Show();
-                UE_LOG(LogTemp, Warning, TEXT(" JoystickWidget->AddToViewport();."));
-          //  }
-          //  else
-          //  {
-            //    UE_LOG(LogTemp, Warning, TEXT("Failed to create Joystick Widget."));
-           // }
-        }
-        else
-        {
-            UE_LOG(LogTemp, Warning, TEXT("Joystick Widget class not set."));
-        }
 }
 
  void ASTUPlayerCharacter::Tick(float DeltaTime) 
@@ -85,8 +62,8 @@ void ASTUPlayerCharacter::BeginPlay()
 
        // auto* ss = Cast<USTUJoystickWidget>(JoystickWidgetClass);
         FVector2D val = Instance->GetJoystickValues();
-        MoveForward(-val.Y /* == 0 ? 0 : GetJoystickValues().Y > 0 ? -1 : 1*/);
-        MoveRight(val.X /*== 0 ? 0 : GetJoystickValues().X > 0 ? 1 : -1*/);
+        MoveForward(-val.Y);
+        MoveRight(val.X);
  }
 
 void ASTUPlayerCharacter::OnCameraCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,

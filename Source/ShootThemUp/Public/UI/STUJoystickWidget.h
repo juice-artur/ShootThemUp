@@ -21,14 +21,16 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Joystick")
     FVector2D GetJoystickValues() const;
 
-
-protected:
     UPROPERTY(meta = (BindWidget))
     UImage* JoystickBackgroundImage;
 
     UPROPERTY(meta = (BindWidget))
     UImage* JoystickHandleImage;
     virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+
+
+protected:
+
 
 private:
     FVector2D InitialHandlePosition;
