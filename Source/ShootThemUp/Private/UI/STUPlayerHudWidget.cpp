@@ -136,6 +136,30 @@ void USTUPlayerHUDWidget::StartFire() const
     }
 }
 
+void USTUPlayerHUDWidget::Jump() const 
+{
+    APlayerController* PlayerController = GetWorld()->GetFirstPlayerController();
+
+    if (PlayerController)
+    {
+        ASTUPlayerCharacter* PlayerCharacter = Cast<ASTUPlayerCharacter>(PlayerController->GetPawn());
+
+        if (PlayerCharacter)
+        {
+            PlayerCharacter->Jump();
+        }
+        else
+        {
+
+            UE_LOG(LogTemp, Error, TEXT("Failed to cast to ASTUPlayerCharacter"));
+        }
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("No player controller found"));
+    }
+}
+
 void USTUPlayerHUDWidget::StopFire() const
 {
     const auto WeaponComponent = STUUtils::GetSTUPlayerComponent<USTUWeaponComponent>(GetOwningPlayerPawn());

@@ -45,6 +45,9 @@ public:
     UFUNCTION(BlueprintCallable, Category = "UI")
     void StopFire() const;
 
+    UFUNCTION(BlueprintCallable, Category = "UI")
+    void Jump() const;
+
 
 protected:
     UPROPERTY(meta = (BindWidget))
