@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Player/STUBaseCharacter.h"
 #include "InputActionValue.h"
+#include "UI/STUJoystickWidget.h"
 #include "STUPlayerCharacter.generated.h"
 
 class UCameraComponent;
@@ -13,6 +14,7 @@ class USphereComponent;
 class UInputMappingContext;
 class UInputAction;
 
+class UUserWidget;
 
 UCLASS()
 class SHOOTTHEMUP_API ASTUPlayerCharacter : public ASTUBaseCharacter
@@ -21,6 +23,8 @@ class SHOOTTHEMUP_API ASTUPlayerCharacter : public ASTUBaseCharacter
 
 public:
     ASTUPlayerCharacter(const FObjectInitializer& ObjInit);
+    void MoveForward(float Amount);
+    void MoveRight(float Amount);
 
 protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
@@ -54,21 +58,24 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
     UInputAction* IA_MobileCameraMove;
 
+
+    UPROPERTY(EditDefaultsOnly, Category = "UI")
+   // TSubclassOf<UUserWidget> JoystickWidgetClass;
+    UUserWidget* JoystickWidgetClass;
     virtual void OnDeath() override;
     virtual void BeginPlay() override;
+    static USTUJoystickWidget* Instance;
 
 public:
     virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
     virtual bool IsRunning() const override;
+    virtual void Tick(float DeltaTime) override;
     void OnStartFire();
 
 private:
     bool WantsToRun = false;
     bool IsMovingForward = false;
     FVector2D StartFingerPosition;
-
-    void MoveForward(float Amount);
-    void MoveRight(float Amount);
 
     void OnStartRunning();
     void OnStopRunning();
@@ -98,4 +105,7 @@ private:
 
     void UpdateCameraPosition(const FInputActionValue& Value);
     bool IsRightSide(FVector TouchLocation);
+
+    UUserWidget* JoystickWidget;
+
 };

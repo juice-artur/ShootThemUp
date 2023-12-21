@@ -13,6 +13,10 @@
 #include "GameFramework/PlayerController.h" 
 #include "GameFramework/PlayerController.h"
 #include "Kismet/GameplayStatics.h"
+#include "UI/STUJoystickWidget.h"
+#include "UI/STUBaseWidget.h"
+
+USTUJoystickWidget* ASTUPlayerCharacter::Instance = nullptr;
 
 ASTUPlayerCharacter::ASTUPlayerCharacter(const FObjectInitializer& ObjInit) : Super(ObjInit)
 {
@@ -31,6 +35,14 @@ ASTUPlayerCharacter::ASTUPlayerCharacter(const FObjectInitializer& ObjInit) : Su
     CameraCollisionComponent->SetSphereRadius(10.0f);
     CameraCollisionComponent->SetCollisionResponseToAllChannels(ECollisionResponse::ECR_Overlap);
     CameraCollisionComponent->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+
+   /* if (JoystickWidgetClass)
+    {
+        JoystickWidgetClass->RemoveFromParent();
+    }*/
+
+
+
 }
 
 void ASTUPlayerCharacter::BeginPlay()
@@ -41,7 +53,41 @@ void ASTUPlayerCharacter::BeginPlay()
 
     CameraCollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ASTUPlayerCharacter::OnCameraCollisionBeginOverlap);
     CameraCollisionComponent->OnComponentEndOverlap.AddDynamic(this, &ASTUPlayerCharacter::OnCameraCollisionEndOverlap);
+
+
+        if (/*JoystickWidgetClass*/ !Instance)
+        {
+        Instance = Cast<USTUJoystickWidget>(JoystickWidgetClass);
+        Instance->AddToViewport();
+            //JoystickWidget = CreateWidget<UUserWidget>(GetWorld(), JoystickWidgetClass);
+
+          //  if (JoystickWidget)
+           // {
+              //  JoystickWidget->AddToViewport();
+              /*  JoystickWidgetClass->AddToViewport();*/
+                //JoystickWidget->Show();
+                UE_LOG(LogTemp, Warning, TEXT(" JoystickWidget->AddToViewport();."));
+          //  }
+          //  else
+          //  {
+            //    UE_LOG(LogTemp, Warning, TEXT("Failed to create Joystick Widget."));
+           // }
+        }
+        else
+        {
+            UE_LOG(LogTemp, Warning, TEXT("Joystick Widget class not set."));
+        }
 }
+
+ void ASTUPlayerCharacter::Tick(float DeltaTime) 
+ {
+        Super::Tick(DeltaTime); 
+
+       // auto* ss = Cast<USTUJoystickWidget>(JoystickWidgetClass);
+        FVector2D val = Instance->GetJoystickValues();
+        MoveForward(-val.Y /* == 0 ? 0 : GetJoystickValues().Y > 0 ? -1 : 1*/);
+        MoveRight(val.X /*== 0 ? 0 : GetJoystickValues().X > 0 ? 1 : -1*/);
+ }
 
 void ASTUPlayerCharacter::OnCameraCollisionBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
     UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
@@ -158,6 +204,9 @@ void ASTUPlayerCharacter::OnDeath()
     {
         Controller->ChangeState(NAME_Spectating);
     }
+
+    
+
 }
 
 void ASTUPlayerCharacter::OnStartFire()
@@ -220,7 +269,7 @@ void ASTUPlayerCharacter::UpdateCameraPosition(const FInputActionValue& Value)
 
         AddControllerYawInput(-1*(StartFingerPosition.X - NewFingerPosition.X));
 
-        AddControllerPitchInput(-1*(StartFingerPosition.Y - NewFingerPosition.Y));
+        AddControllerPitchInput(StartFingerPosition.Y - NewFingerPosition.Y);
         StartFingerPosition = NewFingerPosition;
     }
    
@@ -247,3 +296,4 @@ bool ASTUPlayerCharacter::IsRightSide(FVector TouchLocation)
 
     return false;
 }
+
